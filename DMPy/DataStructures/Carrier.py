@@ -1,41 +1,69 @@
 """ Carrier будет дефолтным типом данных для наших операций. """
 
-from collections import UserList
-from typing import List
+from collections.abc import MutableSet
 
-# от UserList удобнее наследоваться, погуглите
-
-""" TODO: Возможно, наследоваться от листа - не лучшая идея, и стоит переделать класс Carrier
-Основная спецификация: 
+""" Основная спецификация: 
 - можно итерироваться по объекту
 - должен поддерживать оператор [] (элемент по индексу)"""
 
 
-class Carrier(UserList):
-    """ Класс наследуется от UserList.
+class Carrier(MutableSet):
+    """ Стандартный тип данных пакета """
 
-    Не оч понимаю, какие тут должны быть фичи, но придумать что-то можно"""
-
-    def __init__(self, init: List or int):
+    def __init__(self, init = None):
         """
 
-        :param data: инициализация либо через list, либо через int. В случае int создает
-        лист из чисел 1..init
+        :param data: инициализация либо через set, либо через int. В случае int создает
+        лист из чисел 1..init. Можно не указывать init, тогда создастся пустое множество
+        Экземпляр класса можно распечатать, используя print
         """
 
-        super(Carrier, self).__init__()
-        if type(init) == int:
-            self.data = [i + 1 in range(init)]
+        MutableSet.__init__(self)
+
+        if init == None:
+            self.__data = set({})
+        elif type(init) == int:
+            self.__data = set([i in range(1, init+1)])
         else:
-            self.data = init
+            self.__data = set(init)
+
+    ''' MutableSet - абстрактный класс, так что мы должны определить для нашего носителя оперции __contains__ ( оператор in),
+    __iter__ ( для терирования по множеству в цикле ), __len__ для поддержки оператора len, add и discard для операций на множестве
+    '''
+    def __contains__(self, key):
+        return key in self.__data
+
+    def __len__(self):
+        return len(self.__data)
+
+    def __iter__(self):
+        return iter(self.__data)
+
+    def add(self, key):
+        self.__data.add(key)
+
+    def discard(self, key):
+        self.__data.discard(key)
+
+    def __str__(self):
+        return str(self.__data) #Реализвция __str__ позволяет распечатать обьект, используя print, а также преобразовать его в строку
 
 
 # Тест
 if __name__ == "__main__":
-    print(type([1, 2, 3]) == list)
     car = Carrier([5, 4, 9, 5])
-    print(car.data)
+    print(car._Carrier__data)
     for i in car:
         print(i)
-    print(car[-1])
     print(type(Carrier([1, 2, 3])))
+    print(5 in car)
+    print('foo' in car)
+    car.add('crocodile')
+    car.discard(4)
+    car.discard(4)
+    print(car)
+    car = Carrier()
+    print(car)
+    car.add(0)
+    print(car)
+
