@@ -1,6 +1,7 @@
 """ Carrier будет дефолтным типом данных для наших операций. """
 
 from collections import UserList
+from typing import List
 
 # от UserList удобнее наследоваться, погуглите
 
@@ -15,15 +16,26 @@ class Carrier(UserList):
 
     Не оч понимаю, какие тут должны быть фичи, но придумать что-то можно"""
 
-    def __init__(self, data=[], n=None):
-        UserList.__init__(self)
-        if n:  # по дефолту - мн-во 1..n
-            self.data = [i for i in range(n)]
+    def __init__(self, init: List or int):
+        """
+
+        :param data: инициализация либо через list, либо через int. В случае int создает
+        лист из чисел 1..init
+        """
+
+        super(Carrier, self).__init__()
+        if type(init) == int:
+            self.data = [i + 1 in range(init)]
         else:
-            self.data = data
+            self.data = init
 
 
 # Тест
 if __name__ == "__main__":
-    for i in Carrier([1, 2, 3]):
+    print(type([1, 2, 3]) == list)
+    car = Carrier([5, 4, 9, 5])
+    print(car.data)
+    for i in car:
         print(i)
+    print(car[-1])
+    print(type(Carrier([1, 2, 3])))

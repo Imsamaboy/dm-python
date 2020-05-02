@@ -1,5 +1,5 @@
 """ Модуль для работы со всюду определенными (тотальными) целочисленными функциями"""
-from SprtModule.Sprt import Carrier
+from DataStructures.Sprt import Carrier
 
 
 class Func:
@@ -7,7 +7,7 @@ class Func:
 
     def __init__(self, func=lambda x: x):
         """
-        @:param func: принимаемая функция. По умолчанию стоит тождественное отображение
+        :param func: принимаемая функция. По умолчанию стоит тождественное отображение
         """
         self.func = func
         self.domain = None

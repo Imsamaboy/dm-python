@@ -1,6 +1,6 @@
 """ Модуль для работы со множествами (но не с теми, которые set() )"""
 
-from SprtModule.Sprt import Carrier
+from DataStructures.Sprt import Carrier
 
 
 def Union(lhs: Carrier, rhs: Carrier) -> Carrier:
