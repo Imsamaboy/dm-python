@@ -46,7 +46,10 @@ class Carrier(MutableSet):
         self.__data.discard(key)
 
     def __str__(self):
-        return str(self.__data) #Реализвция __str__ позволяет распечатать обьект, используя print, а также преобразовать его в строку
+        return str(self.__data) #Реализация __str__ позволяет распечатать обьект, используя print, а также преобразовать его в строку
+
+    def copy(self):
+        return Carrier(self.__data.copy())
 
 
 # Тест
