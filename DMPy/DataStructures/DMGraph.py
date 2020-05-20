@@ -48,4 +48,3 @@ class DMGraph(nx.DiGraph):
         plt.show()
         if not save_file:
             os.remove(filename)
-

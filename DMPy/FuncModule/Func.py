@@ -66,4 +66,3 @@ class Func:
         elif type(arg) == DMGraph:
             return [(x, im) for x, im in
                     zip(arg.nodes, map(self.func, arg.nodes))]
-
