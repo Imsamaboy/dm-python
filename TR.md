@@ -128,19 +128,21 @@ import DMpy
 
 DMpy.setUniversum({'a', 'b', 'c'})
 
-graph = [ ('a', 'b'), ('b', 'c'), ('c', 'a') ]
+graph = [('a', 'b'), ('b', 'c'), ('c', 'a')]
 
-f = DMpy.Functions.Function(graph = graph)
+f = DMpy.Functions.Function(graph=graph)
 
-print( f('a') ) #Дожно быть 'b'
+print(f('a'))  # Должно быть 'b'
 
 if ('a', 'c') in f:
-    #Должно быть ложью
+    # Должно быть ложью
+    pass
 if ('b', 'c') in f:
-    #Должно быть истиной
+    # Должно быть истиной
+    pass
 
 for pair in f:
-    print(pair) #Должно быть ('a', 'b'), ('b', 'c'), ('c', 'a')
+    print(pair)  # Должно быть ('a', 'b'), ('b', 'c'), ('c', 'a')
 ```
 
 
@@ -212,21 +214,22 @@ for pair in f:
 ```python
 import DMpy
 
-DMpy.setUniversum( range(0, 10000) )
+DMpy.setUniversum(range(0, 10000))
 
-def Kaprekar_python( n ):
+
+def Kaprekar_python(n):
     digits = str(n)
-    digits_to_biggest = ''.join( sorted(digits) )
-    digits_to_lowest = ''.join( sorted(digits, reverse = True) )
+    digits_to_biggest = ''.join(sorted(digits))
+    digits_to_lowest = ''.join(sorted(digits, reverse=True))
     return int(digits_to_lowest) - int(digits_to_biggest)
 
-Kaprekar = DMPy.Functions.Function( procedure = Kaprekar_python )
+Kaprekar = DMPy.Functions.Function(procedure=Kaprekar_python)
 
 periodical_closure = Kaprekar.periodicalClosure()
 
 periodical_closure_graph = periodical_closure.toGraph()
 
-DMpy.Visualization.drawCycloTrees( periodical_closure_graph )
+DMpy.Visualization.drawCycloTrees(periodical_closure_graph)
 ```
 
 
@@ -236,17 +239,17 @@ DMpy.Visualization.drawCycloTrees( periodical_closure_graph )
 ```python
 import DMpy
 
-universum = [ [ (x, y) for y in range(1, 11) ] for x in range(1, 11) ]
+universum = [[(x, y) for y in range(1, 11)] for x in range(1, 11)]
 # universum = (1...10)x(1...10)
-DMpy.setUniversum( universum )
+DMpy.setUniversum(universum)
 
 for relation in DMpy.Functions.allRelations():
-	if relation.isFunctional():
+    if relation.isFunctional():
         pass
     if relation.isTotal():
         pass
-    if relation.isInjective()
-    	pass
+    if relation.isInjective():
+        pass
     if relation.isSurjective():
         pass
 ```
@@ -275,5 +278,10 @@ for operation in DMpy.Operations.allOperations():
 
 for op1 in DMpy.Operations.allOperations():
     for op2 in DMpy.Operations.allOperations():
-        #Тут определяется класс алгебры с op1 и op2, но, так как нет смысла добавлять в пакет поддержку работы с алгебрами, классификацию следует свести к получению свойств op1 и op2 и их анализу.
+        '''
+        Тут определяется класс алгебры с op1 и op2, но,
+        так как нет смысла добавлять в пакет поддержку работы с алгебрами,
+        классификацию следует свести к получению свойств op1 и op2
+        и их анализу.
+        '''
 ```
