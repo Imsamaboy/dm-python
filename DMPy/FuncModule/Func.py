@@ -59,4 +59,4 @@ class Func:
 
 if __name__ == "__main__":
     f = Func(func=lambda x: x ** 2)
-    print(f(Carrier(n=5)))
+    print(f(Carrier([1,2,3])))
