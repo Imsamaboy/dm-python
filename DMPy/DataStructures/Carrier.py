@@ -51,8 +51,4 @@ class Carrier(MutableSet):
     def __str__(self):
         return str(
             self.__data)
-
-
-""" Реализвция __str__ позволяет распечатать обьект, используя print,
-а также преобразовать его в строку"""
-
+   
