@@ -11,3 +11,4 @@ class Oper:
 
     def partial_evaluation(self, **kwargs):
         pass
+

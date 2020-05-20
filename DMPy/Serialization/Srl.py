@@ -15,3 +15,4 @@ def load(filename):
     """ Загрузка объекта из памяти, принимаемый аргумент - название файла."""
     with open(rf'{filename}.pickle', 'rb') as file:
         return pickle.load(file)
+
