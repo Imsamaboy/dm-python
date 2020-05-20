@@ -1,5 +1,7 @@
 """ Модуль для работы со всюду определенными (тотальными) целочисленными функциями"""
-from DataStructures.Sprt import Carrier
+from DataStructures.Carrier import Carrier
+from DataStructures.DMGraph import DMGraph
+from typing import Iterable, List, Tuple
 
 
 class Func:
@@ -17,7 +19,7 @@ class Func:
 
     Туториал: https://www.codementor.io/@arpitbhayani/overload-functions-in-python-13e32ahzqt """
 
-    def __call__(self, arg):
+    def __call__(self, arg: Carrier or DMGraph):
         """ __call__ позволяет такой синтаксис:
 
         new_fun = Func(func=x**2)  # Инициализируем объект класса Func
@@ -25,7 +27,9 @@ class Func:
 
     """
         if type(arg) == Carrier:
-            return Carrier([self.func(x) for x in arg])
+            return Carrier(map(self.func, arg))
+        elif type(arg) == DMGraph:
+            return DMGraph(self._arg_image_pairs(arg.nodes))
         return self.func(arg)
 
     """TODO:
@@ -40,16 +44,17 @@ class Func:
     return_value[1] - f(domain), return_value[2] - f(f(domain)) и т.д.
 
     Если shape='flat', то возвращает одномерный Carrier, где return_value[i] = f(f..(f(domain[i]))
-    @:param domain: множество действия функции
-    @:param depth: сколько раз мы применяем функцию к предыдущему результату
-    @:param shape: 'matrix', 'flat'
+    :param domain: множество действия функции
+    :param depth: сколько раз мы применяем функцию к предыдущему результату
+    :param shape: 'matrix', 'flat'
     """
         pass
 
-    def function_properties(self):
-        """ Хз че тут делать, но для начала можно проверить сюръективонсть-инъективность-биективность,
-        ну и другие свойства, которые у нас есть"""
-        pass
+    def _arg_image_pairs(self, arg: Iterable or DMGraph) -> List[Tuple]:
+        if type(arg) == Carrier:
+            return [(x, im) for x, im in zip(arg, map(self.func, arg))]
+        elif type(arg) == DMGraph:
+            return [(x, im) for x, im in zip(arg.nodes, map(self.func, arg.nodes))]
 
 
 if __name__ == "__main__":

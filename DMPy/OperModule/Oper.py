@@ -1,4 +1,4 @@
-"""Модуль для операций """
+from DataStructures import Carrier
 
 
 class Oper:
@@ -9,5 +9,9 @@ class Oper:
         """ ХЗ если честно"""
         pass
 
-    def partial_evaluation(self, **kwards):
+    def partial_evaluation(self, **kwargs):
         """ Тут тоже хз, в помощь functools.partial(почитайте доки) и в гугле 'partial evaluation'"""
+
+# class Relation:
+#     def __init__(self, logic_relation=lambda x, y: x == y):
+#

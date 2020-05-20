@@ -50,5 +50,5 @@ class DMGraph(nx.DiGraph):
 
 
 if __name__ == "__main__":
-    t = DMGraph([(1, 2), (2, 3), (3, 3), (8, 9), (9, 10), (10, 8)])
+    t = DMGraph([(1, 2), (3, 4)])
     t.visualise()
