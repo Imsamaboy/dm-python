@@ -55,21 +55,3 @@ class Carrier(MutableSet):
 
 """ Реализвция __str__ позволяет распечатать обьект, используя print,
 а также преобразовать его в строку"""
-
-# # Тест
-# if __name__ == "__main__":
-#     car = Carrier([5, 4, 9, 5])
-#     print(car._Carrier__data)
-#     for i in car:
-#         print(i)
-#     print(type(Carrier([1, 2, 3])))
-#     print(5 in car)
-#     print('foo' in car)
-#     car.add('crocodile')
-#     car.discard(4)
-#     car.discard(4)
-#     print(car)
-#     car = Carrier()
-#     print(car)
-#     car.add(0)
-#     print(car)

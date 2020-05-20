@@ -66,7 +66,3 @@ class Func:
         elif type(arg) == DMGraph:
             return [(x, im) for x, im in
                     zip(arg.nodes, map(self.func, arg.nodes))]
-
-# if __name__ == "__main__":
-#     f = Func(func=lambda x: x ** 2)
-#     print(f(Carrier(n=5)))
