@@ -20,7 +20,7 @@
 
 Подпараграфы этого параграфа представляют собой подробное ТЗ по каждому модулю проекта. Название каждого модуля включено в название подпараграфа.
 
-Модуль содержит глобальную переменную `DMpy.universum` типа `Support.Support`, нужную для отображения данных, переданных в функции и методы пакета, в числа. Все функции и методы, в которые передаются элементы универсума, должны работать не с самими данными, а с их отображениями, получаемыми с помощью этого объекта. Но каждый метод, принимающий на вход элементы универсума, имеет также аргумент `images = False`, который, если равен `True`, означает, что переданные данные уже преобразованы в числа и второй раз преобразовывать их не нужно.
+Модуль содержит глобальную переменную `DMPy.universum` типа `Support.Support`, нужную для отображения данных, переданных в функции и методы пакета, в числа. Все функции и методы, в которые передаются элементы универсума, должны работать не с самими данными, а с их отображениями, получаемыми с помощью этого объекта. Но каждый метод, принимающий на вход элементы универсума, имеет также аргумент `images = False`, который, если равен `True`, означает, что переданные данные уже преобразованы в числа и второй раз преобразовывать их не нужно.
 
 `DMpy` содержит метод `DMpy.setUniversum( iterable )`, устанавливающий универсум текущей задачи. Он должен проинициализировать  `DMpy.universum` значением  `DMpy.Support.Support( iterable )`. 
 
@@ -124,9 +124,9 @@
 **Пример:**
 
 ```python
-import DMpy
+import DMPy
 
-DMpy.setUniversum({'a', 'b', 'c'})
+DMPy.setUniversum({'a', 'b', 'c'})
 
 graph = [('a', 'b'), ('b', 'c'), ('c', 'a')]
 
@@ -212,9 +212,9 @@ for pair in f:
 ### Эксперимент 1: функция Капрекара
 
 ```python
-import DMpy
+import DMPy
 
-DMpy.setUniversum(range(0, 10000))
+DMPy.setUniversum(range(0, 10000))
 
 
 def Kaprekar_python(n):
@@ -237,13 +237,13 @@ DMpy.Visualization.drawCycloTrees(periodical_closure_graph)
 ### Эксперимент 2: классификация отношений
 
 ```python
-import DMpy
+import DMPy
 
 universum = [[(x, y) for y in range(1, 11)] for x in range(1, 11)]
 # universum = (1...10)x(1...10)
-DMpy.setUniversum(universum)
+DMPy.setUniversum(universum)
 
-for relation in DMpy.Functions.allRelations():
+for relation in DMPy.Functions.allRelations():
     if relation.isFunctional():
         pass
     if relation.isTotal():
@@ -259,11 +259,11 @@ for relation in DMpy.Functions.allRelations():
 ### Эксперимент 3: построение примеров алгебр
 
 ```python
-import DMpy
+import DMPy
 
-DMpy.setUniversum({0, 1})
+DMPy.setUniversum({0, 1})
 
-for operation in DMpy.Operations.allOperations():
+for operation in DMPy.Operations.allOperations():
     if operation.isCommutative():
         pass
     if operation.isAssociative():
@@ -274,10 +274,10 @@ for operation in DMpy.Operations.allOperations():
         pass
     if operation.hasInverse():
         pass
-    DMpy.Visualization.printCayleyTable(operation)
+    DMPy.Visualization.printCayleyTable(operation)
 
-for op1 in DMpy.Operations.allOperations():
-    for op2 in DMpy.Operations.allOperations():
+for op1 in DMPy.Operations.allOperations():
+    for op2 in DMPy.Operations.allOperations():
         '''
         Тут определяется класс алгебры с op1 и op2, но,
         так как нет смысла добавлять в пакет поддержку работы с алгебрами,
