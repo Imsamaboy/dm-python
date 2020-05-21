@@ -219,6 +219,7 @@ DMPy.setUniversum(range(0, 10000))
 
 def Kaprekar_python(n):
     digits = str(n)
+    digits = '0'*(4-len(digits)) + digits
     digits_to_biggest = ''.join(sorted(digits))
     digits_to_lowest = ''.join(sorted(digits, reverse=True))
     return int(digits_to_lowest) - int(digits_to_biggest)
