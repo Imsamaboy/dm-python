@@ -23,7 +23,7 @@ class Carrier(MutableSet):
         if not init:
             self.__data = set({})
         elif type(init) == int:
-            self.__data = {i in range(1, init + 1)}
+            self.__data = {i for i in range(1, init + 1)}
         else:
             self.__data = set(init)
 
