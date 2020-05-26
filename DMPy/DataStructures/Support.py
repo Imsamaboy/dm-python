@@ -29,6 +29,12 @@ class Support:
             self.__reversed_data = OrderedDict(
                 (elem, num) for num, elem in zipped_pairs)
 
+    def forth(self, elem):
+        return self.__reversed_data[elem]
+
+    def back(self, num):
+        return self.__data[num]
+
     def __len__(self):
         return len(self.__data)
 
