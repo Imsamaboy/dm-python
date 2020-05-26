@@ -2,7 +2,6 @@
 целочисленными функциями"""
 from typing import Iterable, List, Tuple
 
-from DataStructures.DMGraph import DMGraph
 from DataStructures.Support import Support
 
 
@@ -24,7 +23,7 @@ class Func:
     Туториал: https://www.codementor.io/@arpitbhayani/overload-functions-
     in-python-13e32ahzqt """
 
-    def __call__(self, arg: Support or DMGraph):
+    def __call__(self, arg: Support):
         """ __call__ позволяет такой синтаксис:
 
         new_fun = Func(func=x**2)  # Инициализируем объект класса Func
