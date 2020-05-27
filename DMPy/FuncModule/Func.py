@@ -14,7 +14,8 @@ class Func:
         """
         self.__map = function_graph
 
-    def periodical_closure(self, cycle_closure_stop=False, depth=1, f=None):
+    def periodical_closure(self, cycle_closure_stop=False, depth=1, f=None,
+                           only_final_layer=True):
         """
         График многократной композиции функции. В случае f=None ожидается, что
         образ множества определения является подмножеством области определения.
@@ -25,9 +26,11 @@ class Func:
             При True завершает процесс применения композиции, если все
             новые сгенерированные образы уже
         :param depth: int
-            Регулирует кратность композиции
+            Кратность композиции
         :param f: Function (optional)
             Отображение/функция
+        :param only_final_layer: bool
+            Если True, возвращает только результат применения последней композиции
         :return List[Tuple] пар (элемент, образ)
         """
         mapping = deepcopy(self.__map)
@@ -50,8 +53,10 @@ class Func:
                 for pair in mapping.items():
                     occurence_checker[pair] = True
             new_graph = list(mapping.items())
-
-            func_graph += new_graph
+            if only_final_layer:
+                func_graph = new_graph
+            else:
+                func_graph += new_graph
             new_keys = mapping.values()
             new_values = [mapping[elem] if elem in mapping.keys() else f(elem)
                           for elem in new_keys]
