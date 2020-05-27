@@ -1,69 +1,58 @@
 """ Модуль для работы со всюду определенными (тотальными)
 целочисленными функциями"""
-from typing import Iterable, List, Tuple
 
-from DataStructures.Support import Support
+from collections import defaultdict
+from copy import deepcopy
 
 
 class Func:
-    """ Класс обертки для взаимодействия с объектами модуля DMPy"""
-
-    def __init__(self, func=lambda x: x):
+    def __init__(self, function_graph: dict):
         """
-        :param func: принимаемая функция. По умолчанию стоит тождественное
-            отображение
+        :param function_graph: dict
+            График отображения как словарь "элемент:образ"
         """
-        self.func = func
-        self.domain = None
+        self.__map = function_graph
 
-    """TODO: Переделать перегрузить метод __call__ (т.е. создать 2 метода 
-    __call__, один для типа 
-    Support и другой для всего остального) с помощью декораторов
-    
-    Туториал: https://www.codementor.io/@arpitbhayani/overload-functions-
-    in-python-13e32ahzqt """
-
-    def __call__(self, arg: Support):
-        """ __call__ позволяет такой синтаксис:
-
-        new_fun = Func(func=x**2)  # Инициализируем объект класса Func
-        result = new_fun(3) # result = 9
-
-    """
-        if type(arg) == Support:
-            return Support(map(self.func, arg))
-        elif type(arg) == DMGraph:
-            return DMGraph(self._arg_image_pairs(arg.nodes))
-        return self.func(arg)
-
-    """TODO:
-    Перегрузить метод (т.е. создать с таким же названием, но другой) 
-    (опять же с помощью декоратора) так, чтобы его можно было применять 
-    не только к типу Support,
-    но и к одному элементу"""
-
-    def generate_orbit(self, domain: Support, depth=3,
-                       shape='matrix') -> Support:
+    def periodical_closure(self, cycle_closure_stop=False, depth=1, f=None):
         """
-    Метод для составления орбит элементов относительно данной функции
-    (т.е. f(f(f..(f(x))..)) )
+        График многократной композиции функции. В случае f=None ожидается, что
+        образ множества определения является подмножеством области определения.
+        Для удобства добавлена возможность передать непосредственно отображение
+        для генерации образа, не включенного в график функции.
 
-    Если shape='matrix', возвращает Support, элементами которого являются
-    другие Support'ы (матрица короче), где return_value[0] - это domain,
-    return_value[1] - f(domain), return_value[2] - f(f(domain)) и т.д.
+        :param cycle_closure_stop: bool
+            При True завершает процесс применения композиции, если все
+            новые сгенерированные образы уже
+        :param depth: int
+            Регулирует кратность композиции
+        :param f: Function (optional)
+            Отображение/функция
+        :return List[Tuple] пар (элемент, образ)
+        """
+        mapping = deepcopy(self.__map)
+        func_graph = []
+        if not (set(mapping.values()) <= set(mapping.keys())) and f is None:
+            raise AssertionError(
+                "Невозможно сгенерировать образ. Передайте отображение или "
+                "создайте новый объект Func с другим графиком")
 
-    Если shape='flat', то возвращает одномерный Support,
-    где return_value[i] = f(f..(f(domain[i]))
-    :param domain: множество действия функции
-    :param depth: сколько раз мы применяем функцию к предыдущему результату
-    :param shape: 'matrix', 'flat'
-    """
-        pass
+        if cycle_closure_stop:
+            occurence_checker = defaultdict(False)
+        while cycle_closure_stop or depth > 0:
+            depth -= 1
+            if cycle_closure_stop:
+                for pair in mapping.items():
+                    if occurence_checker[pair]:
+                        del mapping[pair[0]]
+                        del mapping[pair[1]]
+                    else:
+                        occurence_checker[pair] = True
+            new_graph = list(mapping.items())
 
-    def _arg_image_pairs(self, arg: Iterable or DMGraph) -> List[Tuple]:
-        if type(arg) == Support:
-            return [(x, im) for x, im in zip(arg, map(self.func, arg))]
-        elif type(arg) == DMGraph:
-            return [(x, im) for x, im in
-                    zip(arg.nodes, map(self.func, arg.nodes))]
+            func_graph += new_graph
+            new_keys = mapping.values()
+            new_values = [mapping[elem] if elem in mapping.keys() else f(elem)
+                          for elem in new_keys]
+            mapping = dict(zip(new_keys, new_values))
 
+        return func_graph
