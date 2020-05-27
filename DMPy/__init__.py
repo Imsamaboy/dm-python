@@ -1,6 +1,7 @@
 from DataStructures.Support import Support
 from FuncModule.Func import Func
-import Serialization
+from Serialization import Srl
+from Visualisation import Visualisation
 
 
 def set_universum(init):
