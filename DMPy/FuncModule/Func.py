@@ -1,6 +1,7 @@
 """ Модуль для работы со всюду определенными (тотальными)
 целочисленными функциями"""
 
+from DataStructures.Support import Support
 from collections import defaultdict
 from copy import deepcopy
 
@@ -30,23 +31,24 @@ class Func:
         :return List[Tuple] пар (элемент, образ)
         """
         mapping = deepcopy(self.__map)
-        func_graph = []
         if not (set(mapping.values()) <= set(mapping.keys())) and f is None:
             raise AssertionError(
                 "Невозможно сгенерировать образ. Передайте отображение или "
                 "создайте новый объект Func с другим графиком")
 
         if cycle_closure_stop:
-            occurence_checker = defaultdict(False)
+            occurence_checker = defaultdict(lambda: False)
+
+        func_graph = []
         while cycle_closure_stop or depth > 0:
             depth -= 1
             if cycle_closure_stop:
+                mapping = {k: v for k, v in mapping.items() if
+                           not occurence_checker[(k, v)]}
+                if not mapping:
+                    return func_graph
                 for pair in mapping.items():
-                    if occurence_checker[pair]:
-                        del mapping[pair[0]]
-                        del mapping[pair[1]]
-                    else:
-                        occurence_checker[pair] = True
+                    occurence_checker[pair] = True
             new_graph = list(mapping.items())
 
             func_graph += new_graph
