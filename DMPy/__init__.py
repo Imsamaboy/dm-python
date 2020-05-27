@@ -1,3 +1,8 @@
+from DataStructures.Support import Support
+from FuncModule.Func import Func
+import Serialization
+
+
 def set_universum(init):
     """
     Позволяет использовать переменную DMPy.universum
