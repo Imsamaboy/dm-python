@@ -1,52 +1,51 @@
-import json
-from DataStructures.Support import Support
-from FuncModule.Func import Func
+import pickle
 
 
-def toStr(object):
+def toStr(something, filename):
+    """ 
+    Функция сериализации объектов в памяти,
+    принимаемые аргументы - сам объект и Ваше название для файла.
     """
-    toStr(object) - Преобразует произвольный объект встроенного типа Python или
-    экземпляр любого класса любого модуля пакета DMpy в строковый вид в формате JSON.
-    В JSON формате должна сохраняться информация о типе данных объекта для
-    возможности восстановления из строки
-    """
-    def dumper(obj):
-        try:
-            return obj.toJSON()
-        except:
-            return obj.__dict__
-    return json.dumps(object, default=dumper, indent=4)
+    with open(rf'{filename}.pickle', 'wb') as file:
+        pickle.dump(something, file)
 
 
-def fromStr(json_object):
-    """ fromSrt(json_object) - преобразует объект в JSON формате обратно
-    в объект Python
-    """
-    obj = json.loads(json_object)
-    if "_Support__data" in json_object:
-        _Support__data = obj["_Support__data"]
-        arguments = []
-        for key, value in _Support__data.items():
-            arguments.append(value)
-        return Support(arguments)
-    elif "_Func__map" in json_object:
-        _Func__map = obj["_Func__map"]
-        return Func(_Func__map)
-    else:
-        return obj
+def fromStr(filename):
+    """ Загрузка объекта из памяти, принимаемый аргумент - название файла."""
+    with open(rf'{filename}.pickle', 'rb') as file:
+        return pickle.load(file)
 
 
 if __name__ == "__main__":
-    a = Support([1, 2, 3, 4, 5, 6])
-    b = toStr(a)
-    print(a)
-    print(fromStr(b))
+    a = {"i": "fds", "sa": "fsa"}
+    dump(a, r"ser_test")
+    b = load(r"ser_test")
+    print(a == b)
 
-    a = Func({"1": 2})
-    print(a.__dict__)
-    b = toStr(a)
-    print(fromStr(b).__dict__)
+    class Pns:
+        def __init__(self):
+            self.a = 10
+            self.b = 20
+    a = Pns()
 
-    a = [1, 2, 3, 4, 5]
-    b = toStr(a)
-    print(fromStr(b))
+    dump(a, "ser_test")
+    b = load("ser_test")
+    print(a.a)
+    print(b.a)
+
+    from collections import UserList
+    from typing import List
+
+    class Carrier(UserList):
+        def __init__(self, init: List or int):
+            super(Carrier, self).__init__()
+            if type(init) == int:
+                self.data = [i + 1 in range(init)]
+            else:
+                self.data = init
+
+    car = Carrier([5, 4, 9, 5])
+    dump(car, "ser_test")
+    car2 = load("ser_test")
+    print(car.data)
+    print(car2.data)
