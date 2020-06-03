@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import json
 import inspect
 import re
@@ -7,14 +6,13 @@ from FuncModule.Func import Func
 from OperModule.Oper import Oper
 
 
-def toStr(object, filename):
+def toStr(obj, filename):
     """
     toStr(object) - Преобразует произвольный объект встроенного типа Python или
     экземпляр любого класса любого модуля пакета DMpy в строковый вид в формате JSON.
     В JSON формате должна сохраняться информация о типе данных объекта для
     возможности восстановления из строки
     """
-
     def dumper(obj):
         try:
             return obj.toJSON()
@@ -22,15 +20,15 @@ def toStr(object, filename):
             return obj.__dict__
 
     with open(rf"{filename}.json", "w") as f:
-        f.write(json.dumps(object, default=dumper, indent=4))
+        f.write(json.dumps(obj, default=dumper, indent=4))
 
 
-def SupportToJSON(object: Support, filename: str):
+def SupportToJSON(obj: Support, filename: str):
     """
     SupportToJSON(object: Support, filename: str)
     Преобразует объект типа Support в JSON файл.
     """
-    return toStr(object, filename)
+    return toStr(obj, filename)
 
 
 # Реализаций объектов Set и Relation пока нет в проекте и они вызывают ошибку
@@ -53,22 +51,22 @@ def RelationToJSON(object: Relation, filename: str):
 '''
 
 
-def FunctionToJSON(object: Func, filename: str):
+def FunctionToJSON(obj: Func, filename: str):
     """
     FunctionToJSON(object: Func, filename: str)
     Преобразует объект типа Func в JSON файл.
     """
-    return toStr(object, filename)
+    return toStr(obj, filename)
 
 
-def OperationToJSON(object: Oper, filename: str):
-    func = object.operation
-    funcString = str(inspect.getsourcelines(func)[0])
-    funcString = funcString.strip("['\\n']").split(" = ")[1]
-    operString = re.search(r"lambda (.*): (.*)\)", funcString)
-    object = {"operation": operString.group(2), "operands": [i.replace(' ', '') for i in operString.group(1).split(",")]}
+def OperationToJSON(obj: Oper, filename: str):
+    func = obj.operation
+    func_string = str(inspect.getsourcelines(func)[0])
+    func_string = func_string.strip("['\\n']").split(" = ")[1]
+    oper_string = re.search(r"lambda (.*): (.*)\)", func_string)
+    obj = {"operation": oper_string.group(2), "operands": [i.replace(' ', '') for i in oper_string.group(1).split(",")]}
     with open(rf"{filename}.json", "w") as f:
-        f.write(json.dumps(object, indent=4))
+        f.write(json.dumps(obj, indent=4))
 
 
 def fromStr(filename):
@@ -154,7 +152,6 @@ def OperationFromJson(filename):
         raise TypeError("Файл не является сериализацией класса Oper")
 
 
-
 if __name__ == "__main__":
     a = Support([1, "lol", 3, "hehehehheheheh", 6, 1, 1])
     print(a)
@@ -176,29 +173,3 @@ if __name__ == "__main__":
     OperationToJSON(a, "file4")
     b = OperationFromJson("file4")
     print(b.operation(2, 3))
-
-
-#    func = lambda num1, num2: num1 + num2
-#    funcString = str(inspect.getsourcelines(func)[0])
-#    funcString = funcString.strip("['\\n']").split(" = ")[1]
-#    print(re.search(r".*: (.*)", funcString).group(1))
-=======
-import pickle
-from DataStructures.Carrier import Carrier
-
-
-def toStr(something, filename):
-    """
-    Функция сериализации объектов в памяти,
-    принимаемые аргументы - сам объект и Ваше название для файла.
-    """
-    with open(rf'{filename}.pickle', 'wb') as file:
-        pickle.dump(something, file)
-
-
-def fromStr(filename):
-    """ Загрузка объекта из памяти, принимаемый аргумент - название файла."""
-    with open(rf'{filename}.pickle', 'rb') as file:
-        return pickle.load(file)
-
->>>>>>> master
