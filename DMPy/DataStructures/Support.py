@@ -48,9 +48,3 @@ class Support:
     def __str__(self):  # Красивая распечатка
         return 'Support' + str(dict.values(self.__data)). \
             replace("dict_values", "")
-
-
-if __name__ == "__main__":
-    a = Support([2, "lol", 3])
-    for i, elem in enumerate(a):
-        print(i, elem)
