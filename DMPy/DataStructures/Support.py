@@ -26,6 +26,9 @@ class Support:
                                init_unique)
             self.__data = OrderedDict(
                 (num, elem) for num, elem in zipped_pairs)
+            # Обновляем генератор
+            zipped_pairs = zip([i for i in range(1, len(init_unique) + 1)],
+                               init_unique)
             self.__reversed_data = OrderedDict(
                 (elem, num) for num, elem in zipped_pairs)
 
