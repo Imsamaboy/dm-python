@@ -106,21 +106,18 @@ import DMPy
 
 DMPy.setUniversum({'a', 'b', 'c'})
 
-graph = [('a', 'b'), ('b', 'c'), ('c', 'a')]
+a = DMPy.universum.forth('a')
+b = DMPy.universum.forth('b')
+c = DMPy.universum.forth('c')
+
+graph = {a: b, b: c, c: as}
 
 f = DMpy.Functions.Function(graph=graph)
 
-print(f('a'))  # Должно быть 'b'
-
-if ('a', 'c') in f:
-    # Должно быть ложью
-    pass
-if ('b', 'c') in f:
-    # Должно быть истиной
-    pass
+print(f(a))  # Должно быть 'b'
 
 for pair in f:
-    print(pair)  # Должно быть ('a', 'b'), ('b', 'c'), ('c', 'a')
+    print(pair)  # Должно быть (a, b), (b, c), (c, a)
 ```
 
 
