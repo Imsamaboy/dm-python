@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import json
 import inspect
 import re
@@ -181,3 +182,23 @@ if __name__ == "__main__":
 #    funcString = str(inspect.getsourcelines(func)[0])
 #    funcString = funcString.strip("['\\n']").split(" = ")[1]
 #    print(re.search(r".*: (.*)", funcString).group(1))
+=======
+import pickle
+from DataStructures.Carrier import Carrier
+
+
+def toStr(something, filename):
+    """
+    Функция сериализации объектов в памяти,
+    принимаемые аргументы - сам объект и Ваше название для файла.
+    """
+    with open(rf'{filename}.pickle', 'wb') as file:
+        pickle.dump(something, file)
+
+
+def fromStr(filename):
+    """ Загрузка объекта из памяти, принимаемый аргумент - название файла."""
+    with open(rf'{filename}.pickle', 'rb') as file:
+        return pickle.load(file)
+
+>>>>>>> master
