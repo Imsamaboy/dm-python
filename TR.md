@@ -193,11 +193,11 @@ for pair in f:
 
 #### Функции:
 
-* `SupportToJSON()`
-* `SetToJSON()`
-* `RelationToJSON()`
-* `FunctionToJSON()`
-* `OperationToJSON()`
+* `SupportToJSON(support)`
+* `SetToJSON(set)`
+* `RelationToJSON(relation)`
+* `FunctionToJSON(function)`
+* `OperationToJSON(operation)`
 * `SupportFromJSON()`
 * `SetFromJSON()`
 * `RelationFromJSON()`
