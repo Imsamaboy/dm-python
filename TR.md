@@ -193,8 +193,16 @@ for pair in f:
 
 #### Функции:
 
-* `toStr(obj)` - преобразует произвольный объект встроенного типа Python или экземпляр любого класса любого модуля пакета DMpy в строковый вид в формате JSON. В JSON формате должна сохраняться информация о типе данных объекта для возможности восстановления из строки
-* `fromStr(str)` - преобразует объект в JSON формате обратно в объект Python
+* `SupportToJSON()`
+* `SetToJSON()`
+* `RelationToJSON()`
+* `FunctionToJSON()`
+* `OperationToJSON()`
+* `SupportFromJSON()`
+* `SetFromJSON()`
+* `RelationFromJSON()`
+* `FunctionFromJSON()`
+* `OperationFromJSON()`
 
 
 
