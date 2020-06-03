@@ -1,4 +1,4 @@
-"""Модуль для операций """
+from DataStructures.Support import Support
 
 
 class Oper:
@@ -9,5 +9,6 @@ class Oper:
         """ ХЗ если честно"""
         pass
 
-    def partial_evaluation(self, **kwards):
-        """ Тут тоже хз, в помощь functools.partial(почитайте доки) и в гугле 'partial evaluation'"""
+    def partial_evaluation(self, **kwargs):
+        pass
+

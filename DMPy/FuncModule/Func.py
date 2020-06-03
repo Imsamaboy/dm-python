@@ -1,57 +1,65 @@
-""" Модуль для работы со всюду определенными (тотальными) целочисленными функциями"""
-from DataStructures.Sprt import Carrier
+""" Модуль для работы со всюду определенными (тотальными)
+целочисленными функциями"""
+
+from DataStructures.Support import Support
+from collections import defaultdict
+from copy import deepcopy
 
 
 class Func:
-    """ Класс обертки для взаимодействия с объектами модуля DMPy"""
-
-    def __init__(self, func=lambda x: x):
+    def __init__(self, function_graph: dict):
         """
-        :param func: принимаемая функция. По умолчанию стоит тождественное отображение
+        :param function_graph: dict
+            График отображения как словарь "элемент:образ"
         """
-        self.func = func
-        self.domain = None
+        self.__map = function_graph
 
-    """TODO: Переделать перегрузить метод __call__ (т.е. создать 2 метода __call__, один для типа 
-    Carrier и другой для всего остального) с помощью декораторов
-
-    Туториал: https://www.codementor.io/@arpitbhayani/overload-functions-in-python-13e32ahzqt """
-
-    def __call__(self, arg):
-        """ __call__ позволяет такой синтаксис:
-
-        new_fun = Func(func=x**2)  # Инициализируем объект класса Func
-        result = new_fun(3) # result = 9
-
-    """
-        if type(arg) == Carrier:
-            return Carrier([self.func(x) for x in arg])
-        return self.func(arg)
-
-    """TODO:
-    Перегрузить метод (т.е. создать с таким же названием, но другой) (опять же с помощью декоратора) так, чтобы его можно было применять не только к типу Carrier,
-    но и к одному элементу"""
-
-    def generate_orbit(self, domain: Carrier, depth=3, shape='matrix') -> Carrier:
+    def periodical_closure(self, cycle_closure_stop=False, depth=1, f=None,
+                           only_final_layer=True):
         """
-    Метод для составления орбит элементов относительно данной функции (т.е. f(f(f..(f(x))..)) )
+        График многократной композиции функции. В случае f=None ожидается, что
+        образ множества определения является подмножеством области определения.
+        Для удобства добавлена возможность передать непосредственно отображение
+        для генерации образа, не включенного в график функции.
 
-    Если shape='matrix', возвращает Carrier, элементами которого являются другие Carrier'ы (матрица короче), где return_value[0] - это domain,
-    return_value[1] - f(domain), return_value[2] - f(f(domain)) и т.д.
+        :param cycle_closure_stop: bool
+            При True завершает процесс применения композиции, если все
+            новые сгенерированные образы уже
+        :param depth: int
+            Кратность композиции
+        :param f: Function (optional)
+            Отображение/функция
+        :param only_final_layer: bool
+            Если True, возвращает только результат применения последней композиции
+        :return List[Tuple] пар (элемент, образ)
+        """
+        mapping = deepcopy(self.__map)
+        if not (set(mapping.values()) <= set(mapping.keys())) and f is None:
+            raise AssertionError(
+                "Невозможно сгенерировать образ. Передайте отображение или "
+                "создайте новый объект Func с другим графиком")
 
-    Если shape='flat', то возвращает одномерный Carrier, где return_value[i] = f(f..(f(domain[i]))
-    @:param domain: множество действия функции
-    @:param depth: сколько раз мы применяем функцию к предыдущему результату
-    @:param shape: 'matrix', 'flat'
-    """
-        pass
+        if cycle_closure_stop:
+            occurence_checker = defaultdict(lambda: False)
 
-    def function_properties(self):
-        """ Хз че тут делать, но для начала можно проверить сюръективонсть-инъективность-биективность,
-        ну и другие свойства, которые у нас есть"""
-        pass
+        func_graph = []
+        while cycle_closure_stop or depth > 0:
+            depth -= 1
+            if cycle_closure_stop:
+                mapping = {k: v for k, v in mapping.items() if
+                           not occurence_checker[(k, v)]}
+                if not mapping:
+                    return func_graph
+                for pair in mapping.items():
+                    occurence_checker[pair] = True
+            new_graph = list(mapping.items())
+            if only_final_layer:
+                func_graph = new_graph
+            else:
+                func_graph += new_graph
+            new_keys = mapping.values()
+            new_values = [mapping[elem] if elem in mapping.keys() else f(elem)
+                          for elem in new_keys]
+            mapping = dict(zip(new_keys, new_values))
 
-
-if __name__ == "__main__":
-    f = Func(func=lambda x: x ** 2)
-    print(f(Carrier(n=5)))
+        return func_graph
