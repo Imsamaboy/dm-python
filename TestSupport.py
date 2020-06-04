@@ -43,3 +43,18 @@ class TestSupport(unittest.TestCase):
     self.assertFalse(self.support.back(1) == self.support.back(2))
     self.assertEqual(self.support.back(self.support.forth(True)), True)
     self.assertEqual(self.support.back(self.support.forth(False)), False)
+
+  def test_forth_for_mixed_types(self):
+    self.support = Support({'котик', 0, True})
+    self.assertFalse(self.support.forth('котик') == self.support.forth(0))
+    self.assertFalse(self.support.forth('котик') == self.support.forth(True))
+    self.assertFalse(self.support.forth(0) == self.support.forth(True))
+
+  def test_back_for_mixed_types(self):
+    self.support = Support({'котик', 0, True})
+    self.assertFalse(self.support.back(1) == self.support.back(2))
+    self.assertFalse(self.support.back(1) == self.support.back(3))
+    self.assertFalse(self.support.back(2) == self.support.back(3))
+    self.assertEqual(self.support.back(self.support.forth('котик')), 'котик')
+    self.assertEqual(self.support.back(self.support.forth(0)), 0)
+    self.assertEqual(self.support.back(self.support.forth(True)), True)
