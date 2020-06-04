@@ -2,11 +2,11 @@
 Модуль для работы со всюду определенными (тотальными)
 целочисленными функциями
 """
-
+import SetUniversum as SU
 from DataStructures.Support import Support
+from DataStructures.Set import Set
 from collections import defaultdict
 from copy import deepcopy
-import SetUniversum as SU
 
 
 class Relation:
@@ -25,18 +25,18 @@ class Relation:
         if criterion:
             # Генерируем множество R по критерию, заданному в качестве функции
             # GenerateR сгенерирует нам множество пар, которые находятся в некотором отношении
-            def GenerateR():
-                for pair in SU.DecartMultiply():
+            def generate_r():
+                for pair in SU.decart_multiply():
                     obj1, obj2 = pair
                     if criterion(obj1, obj2):
                         yield pair
 
-            self.R = Support(GenerateR())
+            self.R = Support(generate_r())
 
     def __iter__(self):
         return iter(self.R)
 
-    def isRefleksive(self):
+    def is_refleksive(self):
         """
             Проверка рефлексивности отношения
             Возвращаемое значение: bool
@@ -47,14 +47,14 @@ class Relation:
                 cur += 1
         return cur == 0
 
-    def isNonRefleksive(self):
+    def is_antirefleksive(self):
         """
             Проверка антирефлексивности отношения
             Возвращаемое значение: bool
         """
-        return not self.isRefleksive()
+        return not self.is_refleksive()
 
-    def isSymmetric(self):
+    def is_symmetric(self):
         """
             Проверка симметричности отношения
             Возвращаемое значение: bool
@@ -68,7 +68,7 @@ class Relation:
                     cur += 1
         return cur == 0
 
-    def isNonSymmetric(self):
+    def is_antisymmetric(self):
         """
             Проверка антисимметричности отношения
             Возвращаемое значение: bool
@@ -83,7 +83,7 @@ class Relation:
                     cur += 1
         return cur == 0
 
-    def isTransitive(self):
+    def is_transitive(self):
         """
             Проверка транзитивности отношения
             Возвращаемое значение: bool
@@ -99,19 +99,23 @@ class Relation:
                         cur += 1
         return cur == 0
 
-    def isFunctional(self):
+    def is_functional(self):
         """
             Проверка отношения на свойство функциональности
             Возвращаемое значение: bool
         """
-        pass
+        S = Set()
+        for (a, b) in self:
+            if a in S:
+                return False
+            S = S.cup(Set({a}))
+        return True
 
-    def get_Relation(self):
+    def get_relation(self):
         """ Возвращает объект Support, в котором находятся пары Relation'а """
         return self.R
 
 
-# Занимаюсь корректированием класса Func
 class Func:
     def __init__(self, function_graph: dict):
         """
