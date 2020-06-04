@@ -13,11 +13,12 @@ def dump_to_json(obj, filename):
     вид в формате JSON. В JSON формате должна сохраняться информация о типе
     данных объекта для возможности восстановления из строки
     """
-    def dumper(obj):
+
+    def dumper(dumped_obj):
         try:
-            return obj.toJSON()
+            return dumped_obj.toJSON()
         except:
-            return obj.__dict__
+            return dumped_obj.__dict__
 
     with open(rf"{filename}.json", "w") as f:
         f.write(json.dumps(obj, default=dumper, indent=4))
@@ -74,7 +75,7 @@ def operation_to_json(obj: Oper, filename: str):
     obj = {
         "operation": oper_data.group(2),
         "operands": operands
-        }
+    }
     with open(rf"{filename}.json", "w") as f:
         f.write(json.dumps(obj, indent=4))
 
@@ -86,7 +87,7 @@ def load_from_json(filename: str):
     """
     with open(rf"{filename}.json", "r") as f:
         json_object = f.read()
-    # try:
+        # try:
         return json.loads(json_object)
     # TODO как нибудь поймать исключение на объект не являющийся builtin
     # type(a).__module__ == "__builtin__"
