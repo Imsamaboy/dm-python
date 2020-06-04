@@ -57,7 +57,15 @@ def function_to_json(obj: Func, filename: str):
     function_to_json(object: Func, filename: str)
     Преобразует объект типа Func в JSON файл.
     """
-    return dump_to_json(obj, filename)
+
+    def dumper(dumped_obj):
+        try:
+            return dumped_obj.toJSON()
+        except:
+            return dumped_obj.__dict__
+
+    with open(rf"{filename}.json", "w") as f:
+        f.write(json.dumps(obj, default=dumper, indent=4))
 
 
 def operation_to_json(obj: Oper, filename: str):
@@ -153,6 +161,10 @@ def function_from_json(filename: str):
     obj = json.loads(json_object)
     if "_Func__map" in json_object:
         func_source_data = obj["_Func__map"]
+        for key, value in func_source_data.items():
+            if key.isdigit():
+                func_source_data.pop(key)
+                func_source_data.update({int(key): value})
         return Func(func_source_data)
     else:
         raise TypeError("Файл не является сериализацией класса Func")
@@ -179,3 +191,26 @@ def operation_from_json(filename: str):
         return Oper(lambda x, y: eval(oper_source_data))
     else:
         raise TypeError("Файл не является сериализацией класса Oper")
+
+
+if __name__ == "__main__":
+    a = Support([1, "lol", 3, "hehehehheheheh", 6, True, 1])
+    print(a)
+    support_to_json(a, "file1")
+    print(support_from_json("file1"))
+
+    a = Func({1: "2", 23214: "lololol", 4: 1, True: 2, 1: False})
+    print(a.__dict__)
+    function_to_json(a, "file2")
+    print(function_from_json("file2").__dict__)
+
+    a = [1, 2, 3, 4, 5]
+    print(a)
+    dump_to_json(a, "file3")
+    print(load_from_json("file3"))
+
+    a = Oper(lambda x_x, o_o: x_x * o_o + o_o)
+    print(a.operation(2, 3))
+    operation_to_json(a, "file4")
+    b = operation_from_json("file4")
+    print(b.operation(2, 3))
