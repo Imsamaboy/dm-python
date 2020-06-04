@@ -6,7 +6,7 @@ from FuncModule.Func import Func
 from OperModule.Oper import Oper
 
 
-def toStr(obj, filename):
+def to_str(obj, filename):
     """
     toStr(object) - Преобразует произвольный объект встроенного типа Python или
     экземпляр любого класса любого модуля пакета DMpy в строковый вид в формате JSON.
@@ -23,43 +23,47 @@ def toStr(obj, filename):
         f.write(json.dumps(obj, default=dumper, indent=4))
 
 
-def SupportToJSON(obj: Support, filename: str):
+def support_to_json(obj: Support, filename: str):
     """
-    SupportToJSON(object: Support, filename: str)
+    support_to_json(object: Support, filename: str)
     Преобразует объект типа Support в JSON файл.
     """
-    return toStr(obj, filename)
+    return to_str(obj, filename)
 
 
 # Реализаций объектов Set и Relation пока нет в проекте и они вызывают ошибку
 '''
-def SetToJSON(object: Set, filename: str):
+def set_to_json(object: Set, filename: str):
     """
-    SetToJSON(object: Set, filename: str)
+    set_to_json(object: Set, filename: str)
     Преобразует объект типа Set в JSON файл.
     """
-    return toStr(object, filename)
+    return to_str(object, filename)
 
 
 
-def RelationToJSON(object: Relation, filename: str):
+def relation_to_json(object: Relation, filename: str):
     """
-    RelationToJSON(object: Relation, filename: str)
+    relation_to_json(object: Relation, filename: str)
     Преобразует объект типа Relation в JSON файл.
     """
-    return toStr(object, filename)
+    return to_str(object, filename)
 '''
 
 
-def FunctionToJSON(obj: Func, filename: str):
+def function_to_json(obj: Func, filename: str):
     """
-    FunctionToJSON(object: Func, filename: str)
+    function_to_json(object: Func, filename: str)
     Преобразует объект типа Func в JSON файл.
     """
-    return toStr(obj, filename)
+    return to_str(obj, filename)
 
 
-def OperationToJSON(obj: Oper, filename: str):
+def operation_to_json(obj: Oper, filename: str):
+    """
+    operation_to_json(object: Func, filename: str)
+    Преобразует объект типа Oper в JSON файл.
+    """
     func = obj.operation
     func_string = str(inspect.getsourcelines(func)[0])
     func_string = func_string.strip("['\\n']").split(" = ")[1]
@@ -69,7 +73,7 @@ def OperationToJSON(obj: Oper, filename: str):
         f.write(json.dumps(obj, indent=4))
 
 
-def fromStr(filename):
+def from_str(filename: str):
     """
     fromSrt(json_object) - преобразует стандартный объект
     в JSON формате обратно в объект Python.
@@ -78,13 +82,13 @@ def fromStr(filename):
         json_object = f.read()
     # try:
         return json.loads(json_object)
-    # TODO как нибудь поймать исключение
+    # TODO как нибудь поймать исключение на объект не являющийся builtin
     # type(a).__module__ == "__builtin__"
     # except:
     #     raise TypeError("Файл не является сериализацией стандартного объекта Python")
 
 
-def SupportFromJSON(filename):
+def support_from_json(filename: str):
     with open(rf"{filename}.json", "r") as f:
         json_object = f.read()
     obj = json.loads(json_object)
@@ -99,7 +103,11 @@ def SupportFromJSON(filename):
 
 
 # Set не реализован, на мой взгляд он ничем не отличается от Support
-def SetFromJSON(filename):
+def set_from_json(filename: str):
+    """
+    def set_from_json(filename: str):
+    :return: Set object
+    """
     with open(rf"{filename}.json", "r") as f:
         json_object = f.read()
     obj = json.loads(json_object)
@@ -113,9 +121,13 @@ def SetFromJSON(filename):
         raise TypeError("Файл не является сериализацией класса Set")
 
 
-# Relation не реализован, сделал так, как по моему представлению
-# он будет выглядеть, то есть как тот же Function.
-def RelationFromJSON(filename):
+# Relation не реализован, по-моему продставлению он
+# будет выглядеть так же, как и Function
+def relation_from_json(filename: str):
+    """
+    def relation_from_json(filename: str):
+    :return: Relation object
+    """
     with open(rf"{filename}.json", "r") as f:
         json_object = f.read()
     obj = json.loads(json_object)
@@ -126,7 +138,11 @@ def RelationFromJSON(filename):
         raise TypeError("Файл не является сериализацией класса Relation")
 
 
-def FunctionFromJSON(filename):
+def function_from_json(filename: str):
+    """
+    def function_from_json(filename: str):
+    :return: Func object
+    """
     with open(rf"{filename}.json", "r") as f:
         json_object = f.read()
     obj = json.loads(json_object)
@@ -137,7 +153,7 @@ def FunctionFromJSON(filename):
         raise TypeError("Файл не является сериализацией класса Func")
 
 
-def OperationFromJson(filename):
+def operation_from_json(filename: str):
     with open(rf"{filename}.json", "r") as f:
         json_object = f.read()
     obj = json.loads(json_object)
@@ -153,23 +169,23 @@ def OperationFromJson(filename):
 
 
 if __name__ == "__main__":
-    a = Support([1, "lol", 3, "hehehehheheheh", 6, 1, 1])
+    a = Support([1, "lol", 3, "hehehehheheheh", 6, True, 1])
     print(a)
-    SupportToJSON(a, "file1")
-    print(SupportFromJSON("file1"))
+    support_to_json(a, "file1")
+    print(support_from_json("file1"))
 
-    a = Func({1: 2, "23214": "lololol", "4": 1, 1: 2, 1: 2})
+    a = Func({1: 2, "23214": "lololol", "4": 1, True: 2, 1: False})
     print(a.__dict__)
-    SupportToJSON(a, "file2")
-    print(FunctionFromJSON("file2").__dict__)
+    function_to_json(a, "file2")
+    print(function_from_json("file2").__dict__)
 
     a = [1, 2, 3, 4, 5]
     print(a)
-    SupportToJSON(a, "file3")
-    print(fromStr("file3"))
+    to_str(a, "file3")
+    print(from_str("file3"))
 
-    a = Oper(lambda ffxx, x: ffxx*x*x*x*ffxx)
+    a = Oper(lambda x_x, o_o: x_x*o_o + o_o)
     print(a.operation(2, 3))
-    OperationToJSON(a, "file4")
-    b = OperationFromJson("file4")
+    operation_to_json(a, "file4")
+    b = operation_from_json("file4")
     print(b.operation(2, 3))
