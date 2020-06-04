@@ -1,4 +1,4 @@
-from DataStructures import Carrier
+from DataStructures.Support import Support
 
 
 class Oper:
@@ -11,4 +11,3 @@ class Oper:
 
     def partial_evaluation(self, **kwargs):
         pass
-
