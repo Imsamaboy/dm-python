@@ -9,11 +9,11 @@ class TestOperation(unittest.TestCase):
 
 """__contains__ method is tested here (initialisation by graph)"""
   def test_checking_for_membership____graph(self):
-    g1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
-    oper1 = Operation(graph = g1)
-    for k in g1
-      self.assertTrue((k, g1[k]) in oper1)
-      self.assertFalse((k, -1) in oper1)
+    graph1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
+    oper1 = Operation(graph = graph1)
+    for key in graph1
+      self.assertTrue((key, graph1[key]) in oper1)
+      self.assertFalse((key, -1) in oper1)
     self.assertFalse(((1, 3), 1) in oper1)
 
 """__contains__ method is tested here (initialisation by procedure)"""
@@ -27,12 +27,12 @@ class TestOperation(unittest.TestCase):
 
 """__iter__ method is tested here (initialisation by graph)"""
   def test_iterator_creating____graph(self):
-    g1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
-    oper1 = Operation(graph = g1)
+    graph1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
+    oper1 = Operation(graph = graph1)
 
-    unchecked_tuples = [k for k in g1]
+    unchecked_tuples = [key for key in graph1]
     for var_res in oper1
-      self.assertEqual(g1[var_res[0]], var_res[1])
+      self.assertEqual(graph1[var_res[0]], var_res[1])
       self.assertTrue(var_res[0] in unchecked_tuples)
       if var_res[0] in unchecked_tuples:
         unchecked_tuples.remove(var_res[0])
@@ -42,14 +42,14 @@ class TestOperation(unittest.TestCase):
 
 """__call__ method is tested here (initialisation by graph)"""
   def test_calling_operation_result____graph(self):
-    g1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
-    oper1 = Operation(graph = g1)
+    graph1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
+    oper1 = Operation(graph = graph1)
 
     results_of_operations = []
     results_from_graph = []
-    for k in g1
-      results_of_operations.append(oper1(k[0], k[1]))
-      results_from_graph.append(g1[k])
+    for key in graph1
+      results_of_operations.append(oper1(key[0], key[1]))
+      results_from_graph.append(graph1[key])
     self.assertEqual(results_of_operations, results_from_graph)
 
 """__call__ method is tested here (initialisation by procedure)"""
@@ -67,10 +67,10 @@ class TestOperation(unittest.TestCase):
 
 """isAssociative method is tested here (initialisation by graph)"""
   def test_associativity_checking____graph(self):
-    g1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
-    oper1 = Operation(graph = g1)
-    g2 = {(0, 0): 0, (0, 1): 2, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
-    oper2 = Operation(graph = g2)
+    graph1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
+    oper1 = Operation(graph = graph1)
+    graph2 = {(0, 0): 0, (0, 1): 2, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
+    oper2 = Operation(graph = graph2)
     self.assertTrue(oper1.isAssociative())
     self.assertFalse(oper2.isAssociative())
 
@@ -84,10 +84,10 @@ class TestOperation(unittest.TestCase):
 
 """isCommutative method is tested here (initialisation by graph)"""
   def test_commutativity_checking____graph(self):
-    g1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
-    oper1 = Operation(graph = g1)
-    g2 = {(0, 0): 0, (0, 1): 2, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
-    oper2 = Operation(graph = g2)
+    graph1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
+    oper1 = Operation(graph = graph1)
+    graph2 = {(0, 0): 0, (0, 1): 2, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
+    oper2 = Operation(graph = graph2)
     self.assertTrue(oper1.isCommutative())
     self.assertFalse(oper2.isCommutative())
 
@@ -100,10 +100,10 @@ class TestOperation(unittest.TestCase):
 
 """hasNeutral method is tested here (initialisation by graph)"""
   def test_neutral_elem_existance____graph(self):
-    g1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
-    oper1 = Operation(graph = g1)
-    g2 = {(0, 0): 0, (0, 1): 2, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
-    oper2 = Operation(graph = g2)
+    graph1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
+    oper1 = Operation(graph = graph1)
+    graph2 = {(0, 0): 0, (0, 1): 2, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
+    oper2 = Operation(graph = graph2)
     self.assertTrue(oper1.hasNeutral())
     self.assertFalse(oper2.hasNeutral())
 
@@ -116,10 +116,10 @@ class TestOperation(unittest.TestCase):
 
 """hasInverse method is tested here (initialisation by graph)"""
   def test_inverse_elem_existance____graph(self):
-    g1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
-    oper1 = Operation(graph = g1)
-    g2 = {(0, 0): 0, (0, 1): 1, (1, 0): 1, (1, 1): 1}
-    oper2 = Operation(graph = g2)
+    graph1 = {(0, 0): 0, (0, 1): 1, (0, 2): 2, (1, 0): 1, (1, 1): 2, (1, 2): 0, (2, 0): 2, (2, 1): 0, (2, 2): 1}
+    oper1 = Operation(graph = graph1)
+    graph2 = {(0, 0): 0, (0, 1): 1, (1, 0): 1, (1, 1): 1}
+    oper2 = Operation(graph = graph2)
     self.assertTrue(oper1.hasInverse())
     self.assertFalse(oper2.hasInverse())
 
