@@ -39,7 +39,7 @@ class Relation:
     def is_refleksive(self):
         """
             Проверка рефлексивности отношения
-            Возвращаемое значение: bool
+            Возвращаемое значение:  bool
         """
         cur = 0
         for elem in SU.universum:
@@ -50,14 +50,14 @@ class Relation:
     def is_antirefleksive(self):
         """
             Проверка антирефлексивности отношения
-            Возвращаемое значение: bool
+            Возвращаемое значение:  bool
         """
         return not self.is_refleksive()
 
     def is_symmetric(self):
         """
             Проверка симметричности отношения
-            Возвращаемое значение: bool
+            Возвращаемое значение:  bool
         """
         cur = 0
         for elem1 in SU.universum:
@@ -71,7 +71,7 @@ class Relation:
     def is_antisymmetric(self):
         """
             Проверка антисимметричности отношения
-            Возвращаемое значение: bool
+            Возвращаемое значение:  bool
         """
         cur = 0
         for elem1 in SU.universum:
@@ -86,7 +86,7 @@ class Relation:
     def is_transitive(self):
         """
             Проверка транзитивности отношения
-            Возвращаемое значение: bool
+            Возвращаемое значение:  bool
         """
         cur = 0
         for elem1 in SU.universum:
@@ -102,7 +102,7 @@ class Relation:
     def is_functional(self):
         """
             Проверка отношения на свойство функциональности
-            Возвращаемое значение: bool
+            Возвращаемое значение:  bool
         """
         S = Set()
         for (a, b) in self:

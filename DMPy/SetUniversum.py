@@ -16,7 +16,8 @@ def setUniversum(iter=None):
 
 
 def decart_multiply(deg=2):
-    """ Генерируем множество декартого произведения:
+    """
+        Генерируем множество декартого произведения:
             Universum x Universum
     """
     for elem1 in universum:
