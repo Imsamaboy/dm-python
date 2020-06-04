@@ -13,6 +13,7 @@ def to_str(obj, filename):
     В JSON формате должна сохраняться информация о типе данных объекта для
     возможности восстановления из строки
     """
+
     def dumper(obj):
         try:
             return obj.toJSON()
@@ -80,7 +81,7 @@ def from_str(filename: str):
     """
     with open(rf"{filename}.json", "r") as f:
         json_object = f.read()
-    # try:
+        # try:
         return json.loads(json_object)
     # TODO как нибудь поймать исключение на объект не являющийся builtin
     # type(a).__module__ == "__builtin__"
@@ -161,8 +162,12 @@ def operation_from_json(filename: str):
         operstr = f" {obj['operation']} "
         operands = obj["operands"]
         # самый стремный момент
-        operstr = re.sub(rf"(\W){operands[0]}(\W)", r"\1x\2", operstr)
-        operstr = re.sub(rf"(\W){operands[1]}(\W)", r"\1y\2", operstr)
+        if len(operands[0]) >= len(operands[1]):
+            operstr = re.sub(rf"(\W){operands[0]}(\W)", r"\1x\2", operstr)
+            operstr = re.sub(rf"(\W){operands[1]}(\W)", r"\1y\2", operstr)
+        else:
+            operstr = re.sub(rf"(\W){operands[1]}(\W)", r"\1y\2", operstr)
+            operstr = re.sub(rf"(\W){operands[0]}(\W)", r"\1x\2", operstr)
         return Oper(lambda x, y: eval(operstr))
     else:
         raise TypeError("Файл не является сериализацией класса Oper")
@@ -184,7 +189,7 @@ if __name__ == "__main__":
     to_str(a, "file3")
     print(from_str("file3"))
 
-    a = Oper(lambda x_x, o_o: x_x*o_o + o_o)
+    a = Oper(lambda _x_x_, x_x: _x_x_ * x_x + x_x)
     print(a.operation(2, 3))
     operation_to_json(a, "file4")
     b = operation_from_json("file4")
