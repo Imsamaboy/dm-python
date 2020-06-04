@@ -8,10 +8,10 @@ from OperModule.Oper import Oper
 
 def dump_to_json(obj, filename):
     """
-    dump_to_json(object) - Преобразует произвольный объект встроенного типа Python или
-    экземпляр любого класса любого модуля пакета DMpy в строковый вид в формате JSON.
-    В JSON формате должна сохраняться информация о типе данных объекта для
-    возможности восстановления из строки
+    dump_to_json(object) - Преобразует произвольный объект встроенного типа
+    Python или экземпляр любого класса любого модуля пакета DMpy в строковый
+    вид в формате JSON. В JSON формате должна сохраняться информация о типе
+    данных объекта для возможности восстановления из строки
     """
     def dumper(obj):
         try:
@@ -67,8 +67,14 @@ def operation_to_json(obj: Oper, filename: str):
     func = obj.operation
     func_string = str(inspect.getsourcelines(func)[0])
     func_string = func_string.strip("['\\n']").split(" = ")[1]
-    oper_string = re.search(r"lambda (.*): (.*)\)", func_string)
-    obj = {"operation": oper_string.group(2), "operands": [i.replace(' ', '') for i in oper_string.group(1).split(",")]}
+    oper_data = re.search(r"lambda (.*): (.*)\)", func_string)
+    operands = []
+    for operand_str in oper_data.group(1).split(","):
+        operands.append(operand_str.replace(' ', ''))
+    obj = {
+        "operation": oper_data.group(2),
+        "operands": operands
+        }
     with open(rf"{filename}.json", "w") as f:
         f.write(json.dumps(obj, indent=4))
 
@@ -84,8 +90,6 @@ def load_from_json(filename: str):
         return json.loads(json_object)
     # TODO как нибудь поймать исключение на объект не являющийся builtin
     # type(a).__module__ == "__builtin__"
-    # except:
-    #     raise TypeError("Файл не является сериализацией стандартного объекта Python")
 
 
 def support_from_json(filename: str):
@@ -93,9 +97,9 @@ def support_from_json(filename: str):
         json_object = f.read()
     obj = json.loads(json_object)
     if "_Support__data" in json_object:
-        _Support__data = obj["_Support__data"]
+        support_source_data = obj["_Support__data"]
         arguments = []
-        for key, value in _Support__data.items():
+        for key, value in support_source_data.items():
             arguments.append(value)
         return Support(arguments)
     else:
@@ -112,9 +116,9 @@ def set_from_json(filename: str):
         json_object = f.read()
     obj = json.loads(json_object)
     if "_Set__data" in json_object:
-        _Set__data = obj["_Set__data"]
+        set_source_data = obj["_Set__data"]
         arguments = []
-        for key, value in _Set__data.items():
+        for key, value in set_source_data.items():
             arguments.append(value)
         return Set(arguments)
     else:
@@ -132,8 +136,8 @@ def relation_from_json(filename: str):
         json_object = f.read()
     obj = json.loads(json_object)
     if "_Relation__map" in json_object:
-        _Relation__map = obj["_Relation__map"]
-        return Func(_Relation__map)
+        relation_source_data = obj["_Relation__map"]
+        return Func(relation_source_data)
     else:
         raise TypeError("Файл не является сериализацией класса Relation")
 
@@ -147,8 +151,8 @@ def function_from_json(filename: str):
         json_object = f.read()
     obj = json.loads(json_object)
     if "_Func__map" in json_object:
-        _Func__map = obj["_Func__map"]
-        return Func(_Func__map)
+        func_source_data = obj["_Func__map"]
+        return Func(func_source_data)
     else:
         raise TypeError("Файл не является сериализацией класса Func")
 
@@ -158,11 +162,19 @@ def operation_from_json(filename: str):
         json_object = f.read()
     obj = json.loads(json_object)
     if "operation" in json_object:
-        operstr = f" {obj['operation']} "
+        oper_source_data = f" {obj['operation']} "
         operands = obj["operands"]
         # самый стремный момент
-        operstr = re.sub(rf"(\W){operands[0]}(\W)", r"\1x\2", operstr)
-        operstr = re.sub(rf"(\W){operands[1]}(\W)", r"\1y\2", operstr)
-        return Oper(lambda x, y: eval(operstr))
+        if len(operands[0]) >= len(operands[1]):
+            oper_source_data = re.sub(
+                rf"(\W){operands[0]}(\W)", r"\1x\2", oper_source_data)
+            oper_source_data = re.sub(
+                rf"(\W){operands[1]}(\W)", r"\1y\2", oper_source_data)
+        else:
+            oper_source_data = re.sub(
+                rf"(\W){operands[1]}(\W)", r"\1y\2", oper_source_data)
+            oper_source_data = re.sub(
+                rf"(\W){operands[0]}(\W)", r"\1x\2", oper_source_data)
+        return Oper(lambda x, y: eval(oper_source_data))
     else:
         raise TypeError("Файл не является сериализацией класса Oper")
