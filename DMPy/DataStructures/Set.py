@@ -56,7 +56,3 @@ class Set:
 
     def __str__(self):
         return str(self.data)
-
-S1 = Set([])
-S2 = Set([])
-print(S1.cap(S2))
