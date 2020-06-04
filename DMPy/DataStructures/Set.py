@@ -53,6 +53,14 @@ class Set:
                 p1 += 1
                 p2 += 1
         return Set(res)
+    
+    def equals(self, B):
+        if len(self.data) != len(B.data):
+            return False
+        for i in range(len(self.data)):
+            if self.data[i] != B.data[i]:
+                return False
+        return True
 
     def __str__(self):
         return str(self.data)
