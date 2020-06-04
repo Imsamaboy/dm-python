@@ -191,26 +191,3 @@ def operation_from_json(filename: str):
         return Oper(lambda x, y: eval(oper_source_data))
     else:
         raise TypeError("Файл не является сериализацией класса Oper")
-
-
-if __name__ == "__main__":
-    a = Support([1, "lol", 3, "hehehehheheheh", 6, True, 1])
-    print(a)
-    support_to_json(a, "file1")
-    print(support_from_json("file1"))
-
-    a = Func({1: "2", 23214: "lololol", 4: 1, True: 2, 1: False})
-    print(a.__dict__)
-    function_to_json(a, "file2")
-    print(function_from_json("file2").__dict__)
-
-    a = [1, 2, 3, 4, 5]
-    print(a)
-    dump_to_json(a, "file3")
-    print(load_from_json("file3"))
-
-    a = Oper(lambda x_x, o_o: x_x * o_o + o_o)
-    print(a.operation(2, 3))
-    operation_to_json(a, "file4")
-    b = operation_from_json("file4")
-    print(b.operation(2, 3))
