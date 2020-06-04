@@ -1,14 +1,39 @@
-from DataStructures import Carrier
+from DataStructures.Support import Support
+from FuncModule.Func import Func
 
-
+# Реализовываю...
 class Oper:
-    def __init__(self, rule=lambda x, y: x + y):
-        self.operation = rule
+    """ Класс Операций """
+    def __init__(self, graph=None):
+        """
+            Конструктор операции
+            :param graph - словарь, проецирующему пары элементов в элементы
+        """
+        self.graph = graph
 
-    def operation_properties(self):
-        """ ХЗ если честно"""
+    def __contains__(self, item):
         pass
 
-    def partial_evaluation(self, **kwargs):
+    def __iter__(self):
+        pass
+
+    def isTotal(self):
+        """ Проверка тотальности """
+        pass
+
+    def isAssociative(self):
+        """ Проверка ассоциативности """
+        pass
+
+    def hasNeutral(self):
+        """ Проверка на нейтральный элемент """
+        pass
+
+    def hasInverse(self):
+        """ Проверка на обратный элемент """
+        pass
+
+    def isCommutative(self):
+        """ Проверка коммутативности """
         pass
 
