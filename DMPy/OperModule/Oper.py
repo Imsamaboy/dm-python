@@ -1,13 +1,17 @@
 """
-    Модуль для работы с двуместными функциями
+    Модуль для работы с двуместными функциями (операциями)
 """
-from DataStructures.Support import Support
-from FuncModule.Func import Func
+import SetUniversum as SU
 from DataStructures.Set import Set
 
-# В процессе
+
 class Oper:
-    """ Класс Операций """
+    """
+        Класс для определения операции:
+        f: Universum x Universum -> Universum
+
+        + Есть методы проверки свойств операции
+    """
     def __init__(self, graph: dict):
         """
             Конструктор операции
@@ -30,40 +34,75 @@ class Oper:
     def __iter__(self):
         return iter(self.graph)
 
+    def __call__(self, arg1, arg2):
+        return self.graph[arg1, arg2]
+
     def isTotal(self):
-        """ Проверка тотальности """
-        pass
+        """
+            Проверка тотальности
+            Возвращаемое значение: bool
+        """
+        for elem1 in SU.universum:
+            for elem2 in SU.universum:
+                if self.__call__(elem1, elem2) not in self.graph.values():
+                    return False
+        return True
 
     def isAssociative(self):
-        """ Проверка ассоциативности """
-        for elem in self.A:
-            for pair_1 in self.graph:
-                elem1, elem2 = pair_1
-                pair_2 = (elem2, elem)
-                #print(pair_1, pair_2)
-                #print(self.graph[(self.graph[pair_1], elem)])
-                #print('Hi')
-                #print(self.graph[(elem1, self.graph[pair_2])])
-                if self.graph[(self.graph[pair_1], elem)] in self.graph and \
-                   self.graph[(elem1, self.graph[pair_2])] in self.graph and \
-                   self.graph[(self.graph[pair_1], elem)] == self.graph[(elem1, self.graph[pair_2])]:
-                    return True
-        return False
+        """
+            Проверка ассоциативности
+            Возвращаемое значение: bool
+        """
+        for elem1 in SU.universum:
+            for elem2 in SU.universum:
+                for elem3 in SU.universum:
+                    if self.__call__(self.__call__(elem1, elem2), elem3) != \
+                       self.__call__(elem1, self.__call__(elem2, elem3)):
+                        return False
+        return True
 
     def hasNeutral(self):
-        """ Проверка на нейтральный элемент """
+        """
+            Проверка на нейтральный элемент
+            Возвращаемое значение: bool
+        """
+        for elem1 in SU.universum:
+            cur = 0
+            for elem2 in SU.universum:
+                if not (self.__call__(elem1, elem2) == elem2 and
+                        self.__call__(elem2, elem1) == elem2):
+                    break
+                else:
+                    cur += 1
+                    #Neutral = elem1
+            if cur == len(SU.universum):
+                return True
 
     def hasInverse(self):
-        """ Проверка на обратный элемент """
-        pass
+        """
+            Проверка на обратный элемент
+            Возвращаемое значение: bool
+        """
+        cur2 = 0
+        for elem1 in SU.universum:
+            cur1 = 0
+            for elem2 in SU.universum:
+                if not (self.__call__(elem1, elem2) == 0 and
+                        self.__call__(elem2, elem1) == 0):
+                    break
+                else:
+                    cur1 += 1
+            if cur1 == len(SU.universum):
+                cur2 += 1
+        return cur2 == len(SU.universum)
 
     def isCommutative(self):
-        """ Проверка коммутативности """
-        for pair in self.graph:
-            elem1, elem2 = pair
-            print(pair, elem1, elem2)
-            print(self.graph[pair])
-            print(self.graph[(elem2, elem1)])
-            if self.graph[pair] == self.graph[(elem2, elem1)]:
-                return True
-        return False
+        """
+            Проверка коммутативности
+            Возвращаемое значение: bool
+        """
+        for elem1 in SU.universum:
+            for elem2 in SU.universum:
+                if self.__call__(elem1, elem2) != self.__call__(elem2, elem1):
+                    return False
+        return True
