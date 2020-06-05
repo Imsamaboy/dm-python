@@ -9,7 +9,6 @@ class Oper:
     """
         Класс для определения операции:
         f: Universum x Universum -> Universum
-
         + Есть методы проверки свойств операции
     """
     def __init__(self, graph: dict):

@@ -36,6 +36,9 @@ class Relation:
     def __iter__(self):
         return iter(self.R)
 
+    def __contains__(self, item):
+        return item in self.R
+
     def is_refleksive(self):
         """
             Проверка рефлексивности отношения
@@ -124,8 +127,20 @@ class Func:
         """
         self.__map = function_graph
 
+    def __call__(self, arg):
+        return self.__map[arg]
+
     def periodical_closure(self, cycle_closure_stop=False, depth=1, f=None,
                            only_final_layer=True):
+        def is_surjective(self):
+            """ Проверяем сюръективная ли функция """
+            temp_map = {value: key for key, value in self.__map.items()}
+            return len(Set(temp_map.keys())) == len(self.__map.keys())
+
+        def is_injective(self):
+            """ Проверяем инъективная ли функция """
+            return len(self.__map.values()) == len(Set((self.__map.values())))
+
         """
         График многократной композиции функции. В случае f=None ожидается, что
         образ множества определения является подмножеством области определения.
