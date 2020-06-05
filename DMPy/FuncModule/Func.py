@@ -132,14 +132,6 @@ class Func:
 
     def periodical_closure(self, cycle_closure_stop=False, depth=1, f=None,
                            only_final_layer=True):
-        def is_surjective(self):
-            """ Проверяем сюръективная ли функция """
-            temp_map = {value: key for key, value in self.__map.items()}
-            return len(Set(temp_map.keys())) == len(self.__map.keys())
-
-        def is_injective(self):
-            """ Проверяем инъективная ли функция """
-            return len(self.__map.values()) == len(Set((self.__map.values())))
 
         """
         График многократной композиции функции. В случае f=None ожидается, что
@@ -188,3 +180,12 @@ class Func:
             mapping = dict(zip(new_keys, new_values))
 
         return func_graph
+
+    def is_surjective(self):
+            """ Проверяем сюръективная ли функция """
+        temp_map = {value: key for key, value in self.__map.items()}
+        return len(Set(temp_map.keys())) == len(self.__map.keys())
+
+    def is_injective(self):
+            """ Проверяем инъективная ли функция """
+        return len(self.__map.values()) == len(Set((self.__map.values())))
