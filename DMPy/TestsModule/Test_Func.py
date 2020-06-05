@@ -5,7 +5,7 @@ from FuncModule.Func import Func
 
 class TestFunc(unittest.TestCase):
     """ Тестирование класса Func """
-    def test_init(self):
+    def setUp(self):
         map_1 = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 10: 10}
         map_2 = {1: 2, 2: 3, 3: 4, 4: 1, 5: 2, 6: 3, 10: 4}
         map_3 = {}
