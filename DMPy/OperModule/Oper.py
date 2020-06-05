@@ -8,11 +8,11 @@ from DataStructures.Set import Set
 class Oper:
     """
         Класс для определения операции:
-        f: Universum x Universum -> Universum
+        f: universum x universum -> universum
 
         + Есть методы проверки свойств операции
     """
-    def __init__(self, graph: dict):
+    def __init__(self, graph: dict, procedure=None):
         """
             Конструктор операции
             :param graph - словарь, проецирующему пары элементов в элементы
@@ -37,7 +37,7 @@ class Oper:
     def __call__(self, arg1, arg2):
         return self.graph[arg1, arg2]
 
-    def isTotal(self):
+    def is_total(self):
         """
             Проверка тотальности
             Возвращаемое значение: bool
@@ -48,7 +48,7 @@ class Oper:
                     return False
         return True
 
-    def isAssociative(self):
+    def is_associative(self):
         """
             Проверка ассоциативности
             Возвращаемое значение: bool
@@ -61,7 +61,7 @@ class Oper:
                         return False
         return True
 
-    def hasNeutral(self):
+    def has_neutral(self):
         """
             Проверка на нейтральный элемент
             Возвращаемое значение: bool
@@ -74,11 +74,10 @@ class Oper:
                     break
                 else:
                     cur += 1
-                    #Neutral = elem1
             if cur == len(SU.universum):
                 return True
 
-    def hasInverse(self):
+    def has_inverse(self):
         """
             Проверка на обратный элемент
             Возвращаемое значение: bool
@@ -96,7 +95,7 @@ class Oper:
                 cur2 += 1
         return cur2 == len(SU.universum)
 
-    def isCommutative(self):
+    def is_commutative(self):
         """
             Проверка коммутативности
             Возвращаемое значение: bool
